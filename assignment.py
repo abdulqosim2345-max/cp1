@@ -1,41 +1,48 @@
-def classify(value):
-    if value < 208:
-        return "Below range"
-    if value <= 212:
-        return "In range"
-    return "Above range"
+def replace_value(values, index, new_value):
+    if 0 <= index < len(values):
+        values[index] = new_value
 
+def find_first(values, target):
+    for i in range(len(values)):
+        if values[i] == target:
+            return i
+    return -1
 
-def calculate_average(total, count):
-    average_snapshot = total / count
-    average_result = average_snapshot
-    return average_result
+def summarize(values):
+    min_value = min(values)
+    max_value = max(values)
+    total = sum(values)
+    return (min_value, max_value, total)
 
+original = []
 
-sheet_count = int(input("Enter the number of paper sheets: "))
+number_of_days = int(input("Enter the number of days: "))
+for i in range(number_of_days):
+    data = int(input("Enter the data use in megabytes: "))
+    original.append(data)
 
-total_width = 0
-below_range_count = 0
-in_range_count = 0
-above_range_count = 0
+updated = original[:]
 
-for _ in range(sheet_count):
-    width = int(input("Enter the paper sheet width: "))
-    classification = classify(width)
-    print(classification)
-    total_width += width
+replace_index = int(input("Enter the index to correct: "))
+new_value = int(input("Enter the new data to use: "))
+replace_value(updated, replace_index, new_value)
 
-    if classification == "Below range":
-        below_range_count += 1
-    elif classification == "In range":
-        in_range_count += 1
-    else:
-        above_range_count += 1
+target = int(input("Enter the data to search for: "))
+found_data = find_first(updated, target)
+target_count = updated.count(target)
 
-average_width = calculate_average(total_width, sheet_count)
+minimum, maximum, total = summarize(updated)
 
-print(f"Total width: {total_width} mm")
-print(f"Average width: {average_width} mm")
-print(f"Below range: {below_range_count}")
-print(f"In range: {in_range_count}")
-print(f"Above range: {above_range_count}")
+sorted_updated = sorted(updated)
+
+print(f"Original: {original}")
+print(f"Updated: {updated}")
+print(f"Sorted: {sorted_updated}")
+print(f"Minimum data use: {minimum} MB")
+print(f"Maximum data use: {maximum} MB")
+print(f"Total data use: {total} MB")
+if found_data != -1:
+    print(f"First matching index: {found_data}")
+else:
+    print("Target not found")
+print(f"Matching values: {target_count}")
